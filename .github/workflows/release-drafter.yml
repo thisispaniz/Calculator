@@ -10,7 +10,6 @@ on:
 
 permissions:
   contents: write
-  pull-request: write
 
 jobs:
   update_release_draft:
