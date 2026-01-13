@@ -1,36 +1,96 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [current, setCurrent] = useState('');
+  const [previous, setPrevious] = useState('');
+  const [operation, setOperation] = useState('');
+
+  const appendNumber = (el) => {
+    if (el === '.' && current.includes('.')) return;
+    setCurrent(current + el);
+  };
+
+  const chooseOperation = (el) => {
+    if (current === '') return;
+    if (previous !== '') {
+      compute();
+    }
+    setOperation(el);
+    setPrevious(current);
+    setCurrent('');
+  };
+
+  const compute = () => {
+    let computation;
+    const prev = parseFloat(previous);
+    const curr = parseFloat(current);
+
+    if (isNaN(prev) || isNaN(curr)) return;
+
+    switch (operation) {
+      case '+':
+        computation = prev + curr;
+        break;
+      case '-':
+        computation = prev - curr;
+        break;
+      case '*':
+        computation = prev * curr;
+        break;
+      case '÷':
+        computation = prev / curr;
+        break;
+      default:
+        return;
+    }
+
+    setCurrent(computation.toString());
+    setOperation('');
+    setPrevious('');
+  };
+
+  const deleteNumber = () => {
+    setCurrent(String(current).slice(0, -1));
+  };
+
+  const clear = () => {
+    setCurrent('');
+    setPrevious('');
+    setOperation('');
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="calculator-grid">
+      <div className="output">
+        <div className="previous-operand">{previous} {operation}</div>
+        <div className="current-operand">{current}</div>
       </div>
-      <h1>Vite ++ React</h1>
-      <p>testing 123</p>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      <button className="span-two" onClick={clear}>AC</button>
+      <button onClick={deleteNumber}>DEL</button>
+      <button onClick={() => chooseOperation('÷')}>÷</button>
+
+      <button onClick={() => appendNumber('1')}>1</button>
+      <button onClick={() => appendNumber('2')}>2</button>
+      <button onClick={() => appendNumber('3')}>3</button>
+      <button onClick={() => chooseOperation('*')}>*</button>
+
+      <button onClick={() => appendNumber('4')}>4</button>
+      <button onClick={() => appendNumber('5')}>5</button>
+      <button onClick={() => appendNumber('6')}>6</button>
+      <button onClick={() => chooseOperation('+')}>+</button>
+
+      <button onClick={() => appendNumber('7')}>7</button>
+      <button onClick={() => appendNumber('8')}>8</button>
+      <button onClick={() => appendNumber('9')}>9</button>
+      <button onClick={() => chooseOperation('-')}>-</button>
+
+      <button onClick={() => appendNumber('.')}>.</button>
+      <button onClick={() => appendNumber('0')}>0</button>
+      <button className="span-two" onClick={compute}>=</button>
+    </div>
+  );
 }
 
-export default App
+export default App;
