@@ -64,7 +64,7 @@ function App() {
     <div className="calculator-grid">
       <div className="output">
         <div className="previous-operand">{previous} {operation}</div>
-        <div className="current-operand">{current}</div>
+        <div className="current-operand" data-testid="display">{current}</div>
       </div>
 
       <button className="span-two" onClick={clear}>AC</button>

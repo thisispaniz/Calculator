@@ -1,16 +1,17 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import App from './App';
+import '@testing-library/jest-dom'; // Fixes "Invalid Chai property" error
 
-// Helper to click buttons by their text
+// Helper: Specifically find a BUTTON with the text, not just any text
 const clickButton = (text) => {
-  fireEvent.click(screen.getByText(text));
+  const button = screen.getByRole('button', { name: text });
+  fireEvent.click(button);
 };
 
 describe('Calculator App', () => {
   it('renders the calculator', () => {
     render(<App />);
-    // Check if some key buttons exist
     expect(screen.getByText('AC')).toBeInTheDocument();
     expect(screen.getByText('=')).toBeInTheDocument();
   });
@@ -20,8 +21,8 @@ describe('Calculator App', () => {
     clickButton('1');
     clickButton('2');
     clickButton('3');
-    // We look for the display element containing the numbers
-    expect(screen.getByText('123')).toBeInTheDocument();
+    // Look specifically at the display, not the buttons
+    expect(screen.getByTestId('display')).toHaveTextContent('123');
   });
 
   it('performs addition correctly', () => {
@@ -30,7 +31,7 @@ describe('Calculator App', () => {
     clickButton('+');
     clickButton('3');
     clickButton('=');
-    expect(screen.getByText('5')).toBeInTheDocument();
+    expect(screen.getByTestId('display')).toHaveTextContent('5');
   });
 
   it('performs subtraction correctly', () => {
@@ -39,7 +40,7 @@ describe('Calculator App', () => {
     clickButton('-');
     clickButton('2');
     clickButton('=');
-    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByTestId('display')).toHaveTextContent('3');
   });
 
   it('clears the display when AC is clicked', () => {
@@ -48,9 +49,8 @@ describe('Calculator App', () => {
     clickButton('+');
     clickButton('5');
     clickButton('AC');
-    // Should be empty or just not find the numbers anymore
-    const display = screen.queryByText('10');
-    expect(display).not.toBeInTheDocument();
+    // Expect display to be empty
+    expect(screen.getByTestId('display')).toHaveTextContent('');
   });
   
   it('deletes the last digit', () => {
@@ -58,7 +58,6 @@ describe('Calculator App', () => {
     clickButton('1');
     clickButton('2');
     clickButton('DEL');
-    expect(screen.getByText('1')).toBeInTheDocument();
-    expect(screen.queryByText('12')).not.toBeInTheDocument();
+    expect(screen.getByTestId('display')).toHaveTextContent('1');
   });
 });
