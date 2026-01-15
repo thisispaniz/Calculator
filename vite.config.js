@@ -5,4 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/Calculator/',
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupfiles: './vitest.setup.js',
+  },
 })
