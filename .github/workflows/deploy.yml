@@ -31,10 +31,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Linting
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test
 
       - name: Build project
         run: |
