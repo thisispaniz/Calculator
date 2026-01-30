@@ -52,7 +52,7 @@ describe('Calculator App', () => {
     // Expect display to be empty
     expect(screen.getByTestId('display')).toHaveTextContent('');
   });
-  
+
   it('deletes the last digit', () => {
     render(<App />);
     clickButton('1');
