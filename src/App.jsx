@@ -62,7 +62,7 @@ function App() {
 
   return (
     <div className="calculator-grid">
-      <h2>Hello!</h2>
+      <h2>Medical Calculator!</h2>
       <div className="output">
         <div className="previous-operand">{previous} {operation}</div>
         <div className="current-operand" data-testid="display">{current}</div>
